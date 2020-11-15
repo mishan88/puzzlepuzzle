@@ -3,18 +3,25 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+interface State {
+  panels: Panel[];
+  panelQueue: null | string;
+}
+
+type Panel = {
+  id: number;
+  asset: string;
+}
+
 export default new Vuex.Store({
   state: {
-    panels: [
-      { id: 1, asset: 'https://picsum.photos/id/11/10/6' },
-      { id: 2, asset: 'https://picsum.photos/id/11/500/300' }
-    ],
+    panels: [],
     panelQueue: null
   },
   getters: {
   },
   mutations: {
-    addPanel (state, payload) {
+    addPanel (state, payload: Panel) {
       state.panels.push(payload)
     },
     addPanelQueue (state, payload) {
