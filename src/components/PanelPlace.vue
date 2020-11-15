@@ -140,6 +140,8 @@ export default defineComponent({
     watchEffect(() => {
       const panelQueue = root.$store.state.panelQueue
       if (panelQueue !== null) {
+        // should instance texture
+        // Error: new Panel(80, panelQueue)
         const texture = PIXI.Texture.from(panelQueue)
         const panel = new Panel(80, texture)
         panelContainer.addChild(panel)
