@@ -1,7 +1,6 @@
 <template>
   <div>
-    <v-img :src="state.asset" width="50" height="50"></v-img>
-    <v-btn @click="panelAdd">Add</v-btn>
+    <v-img :src="state.asset" width="50" height="50" @click="panelAdd"></v-img>
     <v-btn @click="panelCandidateDelete">DELETE</v-btn>
   </div>
 </template>
@@ -28,7 +27,7 @@ export default defineComponent({
       root.$store.commit('panelQueue/push', state.asset)
     }
     function panelCandidateDelete () {
-      console.log('delete')
+      root.$store.commit('panel/delete', state)
     }
 
     return {

@@ -13,4 +13,9 @@ export default class PanelModule extends VuexModule {
   add (payload: Panel) {
     this.panel.push(payload)
   }
+
+  @Mutation
+  delete (payload: Panel) {
+    this.panel = this.panel.filter(panel => panel.id !== payload.id)
+  }
 }
