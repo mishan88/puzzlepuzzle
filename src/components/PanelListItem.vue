@@ -1,7 +1,7 @@
 <template>
   <div>
-    <v-img :src="state.asset" width="50" height="50" @click="panelAdd"></v-img>
-    <v-btn @click="panelCandidateDelete">DELETE</v-btn>
+    <v-img :src="state.asset" width="50" height="50" @click="addPanelToCanvas"></v-img>
+    <v-btn @click="deletePanelCandidate">DELETE</v-btn>
   </div>
 </template>
 <script lang="ts">
@@ -23,17 +23,17 @@ export default defineComponent({
       id: props.id,
       asset: props.asset
     })
-    function panelAdd () {
+    function addPanelToCanvas () {
       root.$store.commit('panelQueue/push', state.asset)
     }
-    function panelCandidateDelete () {
+    function deletePanelCandidate () {
       root.$store.commit('panel/delete', state)
     }
 
     return {
       state,
-      panelAdd,
-      panelCandidateDelete
+      addPanelToCanvas,
+      deletePanelCandidate
     }
   }
 })
