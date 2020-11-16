@@ -138,14 +138,14 @@ export default defineComponent({
       panelRef.value.appendChild(puzzleApp.view)
     })
     watchEffect(() => {
-      const panelQueue = root.$store.state.panelQueue
+      const panelQueue = root.$store.state.panelQueue.panelQueue
       if (panelQueue !== null) {
         // should instance texture
         // Error: new Panel(80, panelQueue)
         const texture = PIXI.Texture.from(panelQueue)
         const panel = new Panel(80, texture)
         panelContainer.addChild(panel)
-        root.$store.commit('deletePanelQueue')
+        root.$store.commit('panelQueue/pop')
       }
     })
     return {

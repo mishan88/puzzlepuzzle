@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-file-input multiple accept="image/*" label="File input" ref="fileInputRef" v-on:change="addPanelCandidate"></v-file-input>
-    <div v-if="!panelCandidates">
+    <div v-if="panelCandidates.length === 0">
       Add Panel!
     </div>
     <div v-else>
@@ -18,16 +18,16 @@ export default defineComponent({
   setup (props, { root }) {
     function addPanelCandidate (files: File[]) {
       if (event !== null) {
-        let nextId = root.$store.state.panels.length
+        let nextId = root.$store.state.panel.panel.length
 
         for (const file of files) {
           const src = URL.createObjectURL(file)
-          root.$store.commit('addPanel', { id: nextId++, asset: src })
+          root.$store.commit('panel/add', { id: nextId++, asset: src })
         }
       }
     }
     const panelCandidates = computed(() => {
-      return root.$store.state.panels
+      return root.$store.state.panel.panel
     })
     return {
       addPanelCandidate,

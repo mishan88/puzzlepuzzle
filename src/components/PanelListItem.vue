@@ -25,7 +25,7 @@ export default defineComponent({
       asset: props.asset
     })
     function panelAdd () {
-      root.$store.commit('addPanelQueue', state.asset)
+      root.$store.commit('panelQueue/push', state.asset)
     }
     function panelCandidateDelete () {
       console.log('delete')
