@@ -4,7 +4,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, onMounted, watchEffect } from '@vue/composition-api'
+import { defineComponent, ref, onMounted, watchEffect, inject } from '@vue/composition-api'
 import * as PIXI from 'pixi.js'
 
 class Panel extends PIXI.Sprite {
@@ -109,7 +109,8 @@ class LineContainer extends PIXI.Container {
 
 export default defineComponent({
   name: 'PanelPlace',
-  setup (props, { root }) {
+  setup () {
+    const store: any = inject('vuex-store')
     const panelRef = ref()
     const puzzleApp = new PIXI.Application({
       autoDensity: true,
@@ -138,14 +139,14 @@ export default defineComponent({
       panelRef.value.appendChild(puzzleApp.view)
     })
     watchEffect(() => {
-      const panelQueue = root.$store.state.panelQueue.panelQueue
+      const panelQueue = store.state.panelQueue.panelQueue
       if (panelQueue !== null) {
         // should instance texture
         // Error: new Panel(80, panelQueue)
         const texture = PIXI.Texture.from(panelQueue)
         const panel = new Panel(80, texture)
         panelContainer.addChild(panel)
-        root.$store.commit('panelQueue/pop')
+        store.commit('panelQueue/pop', { root: true })
       }
     })
     return {

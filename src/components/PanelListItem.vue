@@ -5,7 +5,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive } from '@vue/composition-api'
+import { defineComponent, reactive, inject } from '@vue/composition-api'
 
 interface Props {
   id: number;
@@ -18,16 +18,17 @@ export default defineComponent({
     id: Number,
     asset: String
   },
-  setup (props, { root }) {
+  setup (props) {
+    const store: any = inject('vuex-store')
     const state = reactive({
       id: props.id,
       asset: props.asset
     })
     function addPanelToCanvas () {
-      root.$store.commit('panelQueue/push', state.asset)
+      store.commit('panelQueue/push', state.asset, { root: true })
     }
     function deletePanelCandidate () {
-      root.$store.commit('panel/delete', state)
+      store.commit('panel/delete', state, { root: true })
     }
 
     return {
