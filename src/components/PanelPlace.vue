@@ -152,6 +152,14 @@ export default defineComponent({
         store.commit('panelQueue/pop', { root: true })
       }
     })
+    watchEffect(() => {
+      const panelGrid = store.state.panelGrid.panelGrid
+      if (panelGrid === true) {
+        lineContainer.visible = true
+      } else {
+        lineContainer.visible = false
+      }
+    })
     return {
       panelRef
     }

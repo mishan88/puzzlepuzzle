@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 
 import PanelModule from './modules/panel'
 import PanelQueueModule from './modules/panelqueue'
+import PanelGridModule from './modules/panelgrid'
 
 Vue.use(Vuex)
 
@@ -17,6 +18,7 @@ export default new Vuex.Store({
   },
   modules: {
     panel: PanelModule,
-    panelQueue: PanelQueueModule
+    panelQueue: PanelQueueModule,
+    panelGrid: PanelGridModule
   }
 })

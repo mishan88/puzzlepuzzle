@@ -1,10 +1,20 @@
 <template>
-  <v-btn>Grid</v-btn>
+  <v-btn @click="showGrid">Grid</v-btn>
 </template>
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api'
+import { defineComponent, inject } from '@vue/composition-api'
 
 export default defineComponent({
-  name: 'AppBarGrid'
+  name: 'AppBarGrid',
+  setup () {
+    const store: any = inject('vuex-store')
+    function showGrid () {
+      store.commit('panelGrid/show')
+    }
+
+    return {
+      showGrid
+    }
+  }
 })
 </script>
