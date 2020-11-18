@@ -10,7 +10,6 @@
         </v-row>
       </div>
     </div>
-    <v-file-input multiple accept="image/*" label="File input" ref="fileInputRef" v-on:change="addPanelCandidate"></v-file-input>
   </div>
 </template>
 <script lang="ts">
@@ -21,21 +20,10 @@ export default defineComponent({
   name: 'PanelList',
   setup () {
     const store: any = inject('vuex-store')
-    function addPanelCandidate (files: File[]) {
-      if (event !== null) {
-        let nextId: number = store.state.panel.panel.length
-
-        for (const file of files) {
-          const src = URL.createObjectURL(file)
-          store.commit('panel/add', { id: nextId++, asset: src }, { root: true })
-        }
-      }
-    }
     const panelCandidates = computed(() => {
       return store.state.panel.panel
     })
     return {
-      addPanelCandidate,
       panelCandidates
     }
   },
