@@ -47,6 +47,9 @@ class Panel extends PIXI.Sprite {
     // x and y should > 0
     this.x = Math.trunc(this.x / this.width) * this.width + this.width / 2
     this.y = Math.trunc(this.y / this.height) * this.height + this.height / 2
+    if (this.x < 0 || this.x > this.parent.parent.width || this.y < 0 || this.y > this.parent.parent.height) {
+      this.destroy()
+    }
   }
 
   onDragMove () {
