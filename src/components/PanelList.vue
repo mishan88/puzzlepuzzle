@@ -1,14 +1,16 @@
 <template>
   <div>
-    <v-file-input multiple accept="image/*" label="File input" ref="fileInputRef" v-on:change="addPanelCandidate"></v-file-input>
     <div data-testid="panelcandidates">
       <div v-if="panelCandidates.length === 0">
         Add Panel!
       </div>
       <div v-else>
-        <PanelListItem v-for="panelCandidate in panelCandidates" v-bind:id="panelCandidate.id" v-bind:asset="panelCandidate.asset" :key="panelCandidate.id" />
+        <v-row class="mb-8">
+          <PanelListItem v-for="panelCandidate in panelCandidates" v-bind:id="panelCandidate.id" v-bind:asset="panelCandidate.asset" :key="panelCandidate.id" />
+        </v-row>
       </div>
     </div>
+    <v-file-input multiple accept="image/*" label="File input" ref="fileInputRef" v-on:change="addPanelCandidate"></v-file-input>
   </div>
 </template>
 <script lang="ts">

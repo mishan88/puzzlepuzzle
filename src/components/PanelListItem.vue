@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-img :src="state.asset" width="50" height="50" @click="addPanelToCanvas"></v-img>
-    <v-btn @click="deletePanelCandidate">DELETE</v-btn>
+    <v-icon @click="deletePanelCandidate">mdi-delete</v-icon>
   </div>
 </template>
 <script lang="ts">
