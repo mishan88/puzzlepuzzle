@@ -1,10 +1,19 @@
 <template>
-  <v-btn>Clear</v-btn>
+  <v-btn @click="panelClear">Clear</v-btn>
 </template>
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api'
+import { defineComponent, inject } from '@vue/composition-api'
 
 export default defineComponent({
-  name: 'AppBarClear'
+  name: 'AppBarClear',
+  setup () {
+    const store: any = inject('vuex-store')
+    function panelClear () {
+      store.commit('panelClear/clear')
+    }
+    return {
+      panelClear
+    }
+  }
 })
 </script>

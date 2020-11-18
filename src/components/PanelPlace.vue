@@ -160,6 +160,13 @@ export default defineComponent({
         lineContainer.visible = false
       }
     })
+    watchEffect(() => {
+      const panelClear = store.state.panelClear.panelClear
+      if (panelClear === true) {
+        panelContainer.removeChildren()
+        store.commit('panelClear/clear', { root: true })
+      }
+    })
     return {
       panelRef
     }
