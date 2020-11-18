@@ -4,7 +4,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, onMounted, watchEffect } from '@vue/composition-api'
+import { defineComponent, ref, onMounted, watchEffect, inject } from '@vue/composition-api'
 import * as PIXI from 'pixi.js'
 
 class Panel extends PIXI.Sprite {
@@ -47,6 +47,9 @@ class Panel extends PIXI.Sprite {
     // x and y should > 0
     this.x = Math.trunc(this.x / this.width) * this.width + this.width / 2
     this.y = Math.trunc(this.y / this.height) * this.height + this.height / 2
+    if (this.x < 0 || this.x > this.parent.parent.width || this.y < 0 || this.y > this.parent.parent.height) {
+      this.destroy()
+    }
   }
 
   onDragMove () {
@@ -109,7 +112,8 @@ class LineContainer extends PIXI.Container {
 
 export default defineComponent({
   name: 'PanelPlace',
-  setup (props, { root }) {
+  setup () {
+    const store: any = inject('vuex-store')
     const panelRef = ref()
     const puzzleApp = new PIXI.Application({
       autoDensity: true,
@@ -138,12 +142,29 @@ export default defineComponent({
       panelRef.value.appendChild(puzzleApp.view)
     })
     watchEffect(() => {
-      const panelQueue = root.$store.state.panelQueue
+      const panelQueue = store.state.panelQueue.panelQueue
       if (panelQueue !== null) {
+        // should instance texture
+        // Error: new Panel(80, panelQueue)
         const texture = PIXI.Texture.from(panelQueue)
         const panel = new Panel(80, texture)
         panelContainer.addChild(panel)
-        root.$store.commit('deletePanelQueue')
+        store.commit('panelQueue/pop', { root: true })
+      }
+    })
+    watchEffect(() => {
+      const panelGrid = store.state.panelGrid.panelGrid
+      if (panelGrid === true) {
+        lineContainer.visible = true
+      } else {
+        lineContainer.visible = false
+      }
+    })
+    watchEffect(() => {
+      const panelClear = store.state.panelClear.panelClear
+      if (panelClear === true) {
+        panelContainer.removeChildren()
+        store.commit('panelClear/clear', { root: true })
       }
     })
     return {

@@ -1,0 +1,40 @@
+<template>
+  <span>
+    <v-btn @click="buttonClick">PANEL</v-btn>
+    <input style="display: none" type="file" multiple accept="image/*" label="File input" ref="fileInputRef" @change="addPanelCandidate"/>
+  </span>
+</template>
+<script lang="ts">
+import { defineComponent, inject, ref } from '@vue/composition-api'
+
+interface HTMLInputEvent extends Event {
+  target: HTMLInputElement & EventTarget;
+}
+
+export default defineComponent({
+  name: 'AppBarPanel',
+  setup () {
+    const fileInputRef = ref()
+    const store: any = inject('vuex-store')
+    function addPanelCandidate (event: HTMLInputEvent) {
+      if (event.target.files !== null) {
+        let nextId: number = store.state.panel.panel.length
+
+        for (const file of event.target.files) {
+          const src = URL.createObjectURL(file)
+          store.commit('panel/add', { id: nextId++, asset: src }, { root: true })
+        }
+      }
+      // TODO: same files input repeatly
+    }
+    function buttonClick () {
+      fileInputRef.value.click()
+    }
+    return {
+      addPanelCandidate,
+      buttonClick,
+      fileInputRef
+    }
+  }
+})
+</script>

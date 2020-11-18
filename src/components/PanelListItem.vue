@@ -1,41 +1,40 @@
 <template>
   <div>
-    <p>id: {{ state.id }}</p>
-    <v-img :src="state.asset" width="50" height="50"></v-img>
-    <v-btn @click="panelAdd">Add</v-btn>
-    <v-btn @click="panelCandidateDelete">DELETE</v-btn>
+    <v-img :src="state.asset" width="50" height="50" @click="addPanelToCanvas"></v-img>
+    <v-icon @click="deletePanelCandidate">mdi-delete</v-icon>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive, computed } from '@vue/composition-api'
+import { defineComponent, reactive, inject } from '@vue/composition-api'
 
 interface Props {
   id: number;
-  asset: Blob;
+  asset: string;
 }
 
 export default defineComponent({
   name: 'PanelListItem',
   props: {
     id: Number,
-    asset: Blob
+    asset: String
   },
-  setup (props, { root }) {
+  setup (props) {
+    const store: any = inject('vuex-store')
     const state = reactive({
       id: props.id,
       asset: props.asset
     })
-    function panelAdd () {
-      root.$store.commit('addPanelQueue', state.asset)
+    function addPanelToCanvas () {
+      store.commit('panelQueue/push', state.asset, { root: true })
     }
-    function panelCandidateDelete () {
-      console.log('delete')
+    function deletePanelCandidate () {
+      store.commit('panel/delete', state, { root: true })
     }
 
     return {
       state,
-      panelAdd,
-      panelCandidateDelete
+      addPanelToCanvas,
+      deletePanelCandidate
     }
   }
 })
