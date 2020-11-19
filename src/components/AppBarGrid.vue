@@ -1,5 +1,14 @@
 <template>
-  <v-btn @click="showGrid">Grid</v-btn>
+  <v-list-item @click="showGrid">
+    <v-list-item-icon>
+      <v-icon>
+        mdi-grid
+      </v-icon>
+    </v-list-item-icon>
+    <v-list-item-title>
+      Grid
+    </v-list-item-title>
+  </v-list-item>
 </template>
 <script lang="ts">
 import { defineComponent, inject } from '@vue/composition-api'

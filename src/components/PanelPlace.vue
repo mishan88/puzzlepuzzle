@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div width="960" height="480" ref="panelRef"></div>
+    <div ref="panelRef"></div>
   </div>
 </template>
 <script lang="ts">
@@ -25,8 +25,8 @@ class Panel extends PIXI.Sprite {
     this.buttonMode = true
     this.anchor.set(0.5)
     this.dragging = false
-    this.x = 40
-    this.y = 40
+    this.x = 20
+    this.y = 20
     this.data = new PIXI.InteractionData()
     this
       .on('pointerdown', this.onDragStart)
@@ -110,6 +110,15 @@ class LineContainer extends PIXI.Container {
   }
 }
 
+// https://www.pixiplayground.com/#/edit/1vNMaYhaqi1-JnwJ_0Y_m
+function scaleToWindow (canvas: HTMLCanvasElement) {
+  const scaleX = window.innerWidth / canvas.offsetWidth
+  const scaleY = window.innerHeight / canvas.offsetHeight
+  const scale = Math.min(scaleX, scaleY)
+  canvas.style.transformOrigin = '0 0'
+  canvas.style.transform = `scale(${scale})`
+}
+
 export default defineComponent({
   name: 'PanelPlace',
   setup () {
@@ -117,14 +126,14 @@ export default defineComponent({
     const panelRef = ref()
     const puzzleApp = new PIXI.Application({
       autoDensity: true,
-      width: 480,
-      height: 960,
+      width: 240,
+      height: 480,
       backgroundColor: 0x1099bb,
       resolution: window.devicePixelRatio || 1
     })
     const numColumn = 6
     const numRow = 12
-    const panelSize = 80
+    const panelSize = 40
 
     const backgroundContainer = new PIXI.Container()
     backgroundContainer.width = puzzleApp.stage.width
@@ -139,7 +148,10 @@ export default defineComponent({
     puzzleApp.stage.addChild(panelContainer)
 
     onMounted(() => {
-      panelRef.value.appendChild(puzzleApp.view)
+      const canvas = puzzleApp.view
+      panelRef.value.appendChild(canvas)
+      window.addEventListener('resize', () => { scaleToWindow(canvas) })
+      scaleToWindow(canvas)
     })
     watchEffect(() => {
       const panelQueue = store.state.panelQueue.panelQueue
@@ -147,7 +159,7 @@ export default defineComponent({
         // should instance texture
         // Error: new Panel(80, panelQueue)
         const texture = PIXI.Texture.from(panelQueue)
-        const panel = new Panel(80, texture)
+        const panel = new Panel(panelSize, texture)
         panelContainer.addChild(panel)
         store.commit('panelQueue/pop', { root: true })
       }

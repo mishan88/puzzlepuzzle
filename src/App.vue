@@ -1,12 +1,10 @@
 <template>
   <v-app>
-    <v-app-bar app>
-      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-      <AppBar/>
-    </v-app-bar>
     <v-navigation-drawer
       v-model="drawer"
-      fixed
+      app
+      :permanent="true"
+      expand-on-hover
     >
       <v-list-item>
         <v-list-item-content>
@@ -16,19 +14,10 @@
         </v-list-item-content>
       </v-list-item>
       <v-divider></v-divider>
-      <v-list>
-        <v-list-item>
-          How to use
-        </v-list-item>
-        <v-list-item>
-          About
-        </v-list-item>
-      </v-list>
+      <AppBar/>
     </v-navigation-drawer>
     <v-main>
-      <v-container>
-        <Puzzle/>
-      </v-container>
+      <Puzzle/>
     </v-main>
   </v-app>
 </template>
@@ -41,7 +30,7 @@ import AppBar from '@/components/AppBar.vue'
 export default defineComponent({
   name: 'App',
   setup () {
-    const drawer = ref(false)
+    const drawer = ref(true)
     return {
       drawer
     }

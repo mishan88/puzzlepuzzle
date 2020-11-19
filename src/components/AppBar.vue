@@ -1,11 +1,28 @@
 <template>
-  <div>
-    <AppBarPanel />
-    <AppBarBackground />
-    <AppBarGrid />
-    <AppBarSave />
-    <AppBarClear />
-  </div>
+  <span>
+    <v-list>
+      <AppBarPanel />
+      <AppBarBackground />
+      <AppBarGrid />
+      <AppBarSave />
+      <AppBarClear />
+      <v-divider></v-divider>
+      <v-list-item>
+        <v-list-item-icon>
+          <v-icon>mdi-help-circle</v-icon>
+        </v-list-item-icon>
+        <v-list-item-title>How to use</v-list-item-title>
+      </v-list-item>
+      <v-list-item>
+        <v-list-item-icon>
+          <v-icon>mdi-information</v-icon>
+        </v-list-item-icon>
+        <v-list-item-title>
+          About
+        </v-list-item-title>
+      </v-list-item>
+    </v-list>
+  </span>
 </template>
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'

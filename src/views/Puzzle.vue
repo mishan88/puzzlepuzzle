@@ -1,7 +1,13 @@
 <template>
   <div>
-    <PanelPlace />
-    <PanelList />
+    <v-row>
+      <v-col>
+        <PanelPlace />
+      </v-col>
+      <v-col>
+        <PanelList />
+      </v-col>
+    </v-row>
   </div>
 </template>
 <script lang="ts">
