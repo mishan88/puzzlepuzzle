@@ -1,6 +1,7 @@
 <template>
   <div>
     <div ref="panelRef"></div>
+    <a href="" download="myPuzzle.png" ref="downloadRef" @click="saveCanvas"></a>
   </div>
 </template>
 <script lang="ts">
@@ -124,6 +125,7 @@ export default defineComponent({
   setup () {
     const store: any = inject('vuex-store')
     const panelRef = ref()
+    const downloadRef = ref()
     const puzzleApp = new PIXI.Application({
       autoDensity: true,
       width: 240,
@@ -146,6 +148,12 @@ export default defineComponent({
     puzzleApp.stage.addChild(backgroundContainer)
     puzzleApp.stage.addChild(lineContainer)
     puzzleApp.stage.addChild(panelContainer)
+
+    function saveCanvas (event: any) {
+      const canvas = puzzleApp.view
+      const image = puzzleApp.renderer.plugins.extract.canvas(puzzleApp.stage)
+      event.target.href = image.toDataURL('image/png')
+    }
 
     onMounted(() => {
       const canvas = puzzleApp.view
@@ -179,9 +187,23 @@ export default defineComponent({
         store.commit('panelClear/clear', { root: true })
       }
     })
+    watchEffect(() => {
+      const panelSave = store.state.panelSave.panelSave
+      if (panelSave === true) {
+        downloadRef.value.click()
+        store.commit('panelSave/save', { root: true })
+      }
+    })
     return {
-      panelRef
+      panelRef,
+      downloadRef,
+      saveCanvas
     }
   }
 })
 </script>
+<style scoped>
+a {
+  display: none;
+}
+</style>
