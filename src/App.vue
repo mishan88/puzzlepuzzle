@@ -17,7 +17,9 @@
       <AppBar/>
     </v-navigation-drawer>
     <v-main>
-      <Puzzle/>
+      <v-container>
+        <Puzzle/>
+      </v-container>
     </v-main>
   </v-app>
 </template>
@@ -40,5 +42,4 @@ export default defineComponent({
     AppBar
   }
 })
-
 </script>
