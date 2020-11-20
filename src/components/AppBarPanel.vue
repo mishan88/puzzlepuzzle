@@ -1,11 +1,13 @@
 <template>
-  <v-list-item @click="buttonClick">
-    <v-list-item-icon>
-      <v-icon>mdi-upload</v-icon>
-    </v-list-item-icon>
-    <v-list-item-title>Add Panel</v-list-item-title>
+  <span>
+    <v-list-item @click="buttonClick">
+      <v-list-item-icon>
+        <v-icon>mdi-upload</v-icon>
+      </v-list-item-icon>
+      <v-list-item-title>Add Panel</v-list-item-title>
+    </v-list-item>
     <input type="file" multiple accept="image/*" label="File input" ref="fileInputRef" @change="addPanelCandidate"/>
-  </v-list-item>
+  </span>
 </template>
 <script lang="ts">
 import { defineComponent, inject, ref } from '@vue/composition-api'
