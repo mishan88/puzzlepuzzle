@@ -4,7 +4,7 @@
       <v-icon>mdi-upload</v-icon>
     </v-list-item-icon>
     <v-list-item-title>Add Panel</v-list-item-title>
-    <input style="display: none" type="file" multiple accept="image/*" label="File input" ref="fileInputRef" @change="addPanelCandidate"/>
+    <input type="file" multiple accept="image/*" label="File input" ref="fileInputRef" @change="addPanelCandidate"/>
   </v-list-item>
 </template>
 <script lang="ts">
@@ -41,3 +41,8 @@ export default defineComponent({
   }
 })
 </script>
+<style scoped>
+input {
+  display: none;
+}
+</style>
