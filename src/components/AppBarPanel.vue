@@ -22,7 +22,7 @@ export default defineComponent({
     const fileInputRef = ref()
     const store: any = inject('vuex-store')
     function addPanelCandidate (event: HTMLInputEvent) {
-      if (event.target.files !== null) {
+      if (event.target.files !== null && event.target.files.length !== 0) {
         let nextId: number = store.state.panel.panel.length
 
         for (const file of event.target.files) {
@@ -30,7 +30,8 @@ export default defineComponent({
           store.commit('panel/add', { id: nextId++, asset: src }, { root: true })
         }
       }
-      // TODO: same files input repeatly
+      // same files input repeatly
+      event.target.value = ''
     }
     function buttonClick () {
       fileInputRef.value.click()
