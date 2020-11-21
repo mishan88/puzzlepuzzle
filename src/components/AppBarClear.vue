@@ -1,5 +1,12 @@
 <template>
-  <v-btn @click="panelClear">Clear</v-btn>
+  <v-list-item @click="panelClear">
+    <v-list-item-icon>
+      <v-icon>mdi-close</v-icon>
+    </v-list-item-icon>
+    <v-list-item-title>
+      Clear
+    </v-list-item-title>
+  </v-list-item>
 </template>
 <script lang="ts">
 import { defineComponent, inject } from '@vue/composition-api'

@@ -1,7 +1,12 @@
 <template>
   <span>
-    <v-btn @click="buttonClick">PANEL</v-btn>
-    <input style="display: none" type="file" multiple accept="image/*" label="File input" ref="fileInputRef" @change="addPanelCandidate"/>
+    <v-list-item @click="buttonClick">
+      <v-list-item-icon>
+        <v-icon>mdi-upload</v-icon>
+      </v-list-item-icon>
+      <v-list-item-title>Add Panel</v-list-item-title>
+    </v-list-item>
+    <input type="file" multiple accept="image/*" label="File input" ref="fileInputRef" @change="addPanelCandidate"/>
   </span>
 </template>
 <script lang="ts">
@@ -17,7 +22,7 @@ export default defineComponent({
     const fileInputRef = ref()
     const store: any = inject('vuex-store')
     function addPanelCandidate (event: HTMLInputEvent) {
-      if (event.target.files !== null) {
+      if (event.target.files !== null && event.target.files.length !== 0) {
         let nextId: number = store.state.panel.panel.length
 
         for (const file of event.target.files) {
@@ -25,7 +30,8 @@ export default defineComponent({
           store.commit('panel/add', { id: nextId++, asset: src }, { root: true })
         }
       }
-      // TODO: same files input repeatly
+      // same files input repeatly
+      event.target.value = ''
     }
     function buttonClick () {
       fileInputRef.value.click()
@@ -38,3 +44,8 @@ export default defineComponent({
   }
 })
 </script>
+<style scoped>
+input {
+  display: none;
+}
+</style>

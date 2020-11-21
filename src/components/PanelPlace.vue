@@ -1,6 +1,8 @@
 <template>
   <div>
-    <div width="960" height="480" ref="panelRef"></div>
+    <div ref="panelRef"></div>
+    <a href="" download="myPuzzle.png" ref="downloadRef" @click="saveCanvas"></a>
+    <img :src="img" ref="imgRef" id="imgRef" v-on:click="changeBackground"/>
   </div>
 </template>
 <script lang="ts">
@@ -25,8 +27,8 @@ class Panel extends PIXI.Sprite {
     this.buttonMode = true
     this.anchor.set(0.5)
     this.dragging = false
-    this.x = 40
-    this.y = 40
+    this.x = 20
+    this.y = 20
     this.data = new PIXI.InteractionData()
     this
       .on('pointerdown', this.onDragStart)
@@ -110,21 +112,33 @@ class LineContainer extends PIXI.Container {
   }
 }
 
+// https://www.pixiplayground.com/#/edit/1vNMaYhaqi1-JnwJ_0Y_m
+function scaleToWindow (canvas: HTMLCanvasElement) {
+  const scaleX = canvas.parentElement === null ? 1 : canvas.parentElement.offsetWidth / canvas.offsetWidth
+  const scaleY = canvas.parentElement === null ? 1 : canvas.parentElement.offsetHeight / canvas.offsetHeight
+  const scale = Math.min(scaleX, scaleY)
+  canvas.style.transformOrigin = '0 0'
+  canvas.style.transform = `scale(${scale})`
+}
+
 export default defineComponent({
   name: 'PanelPlace',
   setup () {
     const store: any = inject('vuex-store')
+    const img = ref()
+    const imgRef = ref()
     const panelRef = ref()
+    const downloadRef = ref()
     const puzzleApp = new PIXI.Application({
       autoDensity: true,
-      width: 480,
-      height: 960,
-      backgroundColor: 0x1099bb,
+      width: 240,
+      height: 480,
+      backgroundColor: 0xffffff,
       resolution: window.devicePixelRatio || 1
     })
     const numColumn = 6
     const numRow = 12
-    const panelSize = 80
+    const panelSize = 40
 
     const backgroundContainer = new PIXI.Container()
     backgroundContainer.width = puzzleApp.stage.width
@@ -138,8 +152,21 @@ export default defineComponent({
     puzzleApp.stage.addChild(lineContainer)
     puzzleApp.stage.addChild(panelContainer)
 
+    function saveCanvas (event: any) {
+      const image = puzzleApp.renderer.plugins.extract.canvas(puzzleApp.stage)
+      event.target.href = image.toDataURL('image/png')
+    }
+
+    function changeBackground () {
+      const background = PIXI.Sprite.from(imgRef.value)
+      backgroundContainer.addChild(background)
+    }
+
     onMounted(() => {
-      panelRef.value.appendChild(puzzleApp.view)
+      const canvas = puzzleApp.view
+      panelRef.value.appendChild(canvas)
+      window.addEventListener('resize', () => { scaleToWindow(canvas) })
+      scaleToWindow(canvas)
     })
     watchEffect(() => {
       const panelQueue = store.state.panelQueue.panelQueue
@@ -147,7 +174,7 @@ export default defineComponent({
         // should instance texture
         // Error: new Panel(80, panelQueue)
         const texture = PIXI.Texture.from(panelQueue)
-        const panel = new Panel(80, texture)
+        const panel = new Panel(panelSize, texture)
         panelContainer.addChild(panel)
         store.commit('panelQueue/pop', { root: true })
       }
@@ -167,9 +194,37 @@ export default defineComponent({
         store.commit('panelClear/clear', { root: true })
       }
     })
+    watchEffect(() => {
+      const panelSave = store.state.panelSave.panelSave
+      if (panelSave === true) {
+        downloadRef.value.click()
+        store.commit('panelSave/save', { root: true })
+      }
+    })
+    watchEffect(() => {
+      const panelBackground = store.state.panelBackground.panelBackground
+      if (panelBackground !== '') {
+        img.value = panelBackground
+        imgRef.value.click()
+      }
+    })
     return {
-      panelRef
+      panelRef,
+      downloadRef,
+      imgRef,
+      img,
+      saveCanvas,
+      changeBackground
     }
   }
 })
 </script>
+<style scoped>
+a {
+  display: none;
+}
+img {
+  display: none;
+}
+
+</style>
