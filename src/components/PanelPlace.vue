@@ -2,6 +2,7 @@
   <div>
     <div ref="panelRef"></div>
     <a href="" download="myPuzzle.png" ref="downloadRef" @click="saveCanvas"></a>
+    <img :src="img" ref="imgRef" id="imgRef" v-on:click="changeBackground"/>
   </div>
 </template>
 <script lang="ts">
@@ -124,13 +125,15 @@ export default defineComponent({
   name: 'PanelPlace',
   setup () {
     const store: any = inject('vuex-store')
+    const img = ref()
+    const imgRef = ref()
     const panelRef = ref()
     const downloadRef = ref()
     const puzzleApp = new PIXI.Application({
       autoDensity: true,
       width: 240,
       height: 480,
-      backgroundColor: 0x1099bb,
+      backgroundColor: 0xffffff,
       resolution: window.devicePixelRatio || 1
     })
     const numColumn = 6
@@ -153,6 +156,11 @@ export default defineComponent({
       const canvas = puzzleApp.view
       const image = puzzleApp.renderer.plugins.extract.canvas(puzzleApp.stage)
       event.target.href = image.toDataURL('image/png')
+    }
+
+    function changeBackground () {
+      const background = PIXI.Sprite.from(imgRef.value)
+      backgroundContainer.addChild(background)
     }
 
     onMounted(() => {
@@ -194,10 +202,20 @@ export default defineComponent({
         store.commit('panelSave/save', { root: true })
       }
     })
+    watchEffect(() => {
+      const panelBackground = store.state.panelBackground.panelBackground
+      if (panelBackground !== '') {
+        img.value = panelBackground
+        imgRef.value.click()
+      }
+    })
     return {
       panelRef,
       downloadRef,
-      saveCanvas
+      imgRef,
+      img,
+      saveCanvas,
+      changeBackground
     }
   }
 })
@@ -206,4 +224,5 @@ export default defineComponent({
 a {
   display: none;
 }
+
 </style>
