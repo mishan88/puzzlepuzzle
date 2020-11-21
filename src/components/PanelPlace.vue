@@ -114,8 +114,8 @@ class LineContainer extends PIXI.Container {
 
 // https://www.pixiplayground.com/#/edit/1vNMaYhaqi1-JnwJ_0Y_m
 function scaleToWindow (canvas: HTMLCanvasElement) {
-  const scaleX = window.innerWidth * 0.95 / canvas.offsetWidth
-  const scaleY = window.innerHeight * 0.95 / canvas.offsetHeight
+  const scaleX = canvas.parentElement === null ? 1 : canvas.parentElement.offsetWidth / canvas.offsetWidth
+  const scaleY = canvas.parentElement === null ? 1 : canvas.parentElement.offsetHeight / canvas.offsetHeight
   const scale = Math.min(scaleX, scaleY)
   canvas.style.transformOrigin = '0 0'
   canvas.style.transform = `scale(${scale})`
