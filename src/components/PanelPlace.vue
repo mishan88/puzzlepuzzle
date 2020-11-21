@@ -153,7 +153,6 @@ export default defineComponent({
     puzzleApp.stage.addChild(panelContainer)
 
     function saveCanvas (event: any) {
-      const canvas = puzzleApp.view
       const image = puzzleApp.renderer.plugins.extract.canvas(puzzleApp.stage)
       event.target.href = image.toDataURL('image/png')
     }
