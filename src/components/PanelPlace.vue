@@ -224,5 +224,8 @@ export default defineComponent({
 a {
   display: none;
 }
+img {
+  display: none;
+}
 
 </style>
