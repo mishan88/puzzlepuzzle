@@ -2,7 +2,7 @@
   <div>
     <div ref="panelRef"></div>
     <a href="" download="myPuzzle.png" ref="downloadRef" @click="saveCanvas"></a>
-    <img src="" ref="imgRef" id="imgRef" />
+    <img src="" width="240" height="480" ref="imgRef" id="imgRef" />
   </div>
 </template>
 <script lang="ts">
@@ -157,6 +157,7 @@ export default defineComponent({
     }
 
     function changeBackground (container: PIXI.Container) {
+      // TODO: rerendering
       const sprite = PIXI.Sprite.from(imgRef.value)
       container.addChild(sprite)
     }
