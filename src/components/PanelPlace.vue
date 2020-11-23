@@ -2,7 +2,7 @@
   <div>
     <div ref="panelRef"></div>
     <a href="" download="myPuzzle.png" ref="downloadRef" @click="saveCanvas"></a>
-    <img :src="img" ref="imgRef" id="imgRef" v-on:click="changeBackground"/>
+    <img src="" ref="imgRef" id="imgRef" />
   </div>
 </template>
 <script lang="ts">
@@ -125,7 +125,6 @@ export default defineComponent({
   name: 'PanelPlace',
   setup () {
     const store: any = inject('vuex-store')
-    const img = ref()
     const imgRef = ref()
     const panelRef = ref()
     const downloadRef = ref()
@@ -157,9 +156,9 @@ export default defineComponent({
       event.target.href = image.toDataURL('image/png')
     }
 
-    function changeBackground () {
-      const background = PIXI.Sprite.from(imgRef.value)
-      backgroundContainer.addChild(background)
+    function changeBackground (container: PIXI.Container) {
+      const sprite = PIXI.Sprite.from(imgRef.value)
+      container.addChild(sprite)
     }
 
     onMounted(() => {
@@ -203,16 +202,15 @@ export default defineComponent({
     })
     watchEffect(() => {
       const panelBackground = store.state.panelBackground.panelBackground
-      if (panelBackground !== '') {
-        img.value = panelBackground
-        imgRef.value.click()
+      if (panelBackground !== null) {
+        imgRef.value.src = panelBackground
+        changeBackground(backgroundContainer)
       }
     })
     return {
       panelRef,
       downloadRef,
       imgRef,
-      img,
       saveCanvas,
       changeBackground
     }
